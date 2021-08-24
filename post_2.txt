@@ -1,0 +1,62 @@
+CREATE TABLE IF NOT EXISTS `tbl_course` (
+  `c_id` int(11) NOT NULL AUTO_INCREMENT,
+  `c_code` varchar(25) DEFAULT NULL,
+  `c_name` varchar(100) NOT NULL,
+  `c_generation` int(3) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`c_id`),
+  UNIQUE KEY `unix_code` (`c_code`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `tbl_lecturer` (
+  `l_id` int(11) NOT NULL AUTO_INCREMENT,
+  `l_code` varchar(25) DEFAULT NULL,
+  `l_firstname` varchar(100) NOT NULL,
+  `l_lastname` varchar(100) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`l_id`),
+  UNIQUE KEY `unix_code` (`l_code`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `tbl_place` (
+  `p_id` int(11) NOT NULL AUTO_INCREMENT,
+  `p_code` varchar(25) DEFAULT NULL,
+  `p_name` varchar(255) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`p_id`),
+  UNIQUE KEY `unix_code` (`p_code`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `tbl_activity` (
+  `a_id` int(11) NOT NULL AUTO_INCREMENT,
+  `c_id` int(11) NOT NULL,
+  `l_id` int(11) NOT NULL,
+  `p_id` int(11) NOT NULL,
+  `a_remark` text NOT NULL,
+  `a_participant` int(5) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`a_id`),
+  UNIQUE KEY `unix_code` (`p_code`)
+  KEY `c_id` (`c_id`),
+  KEY `l_id` (`l_id`),
+  KEY `p_id` (`p_id`),
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+
+1. SELECT c.c_code,c.c_name,c.c_generation,a.a_participant,a.a_remark,concat(l.l_firstname, ' ', l.l_lastname) as fullname 
+   FROM tbl_activity as a
+   LEFT JOIN tbl_course as c ON a.c_id = c.c_id 
+   LEFT JOIN tbl_lecturer as l ON a.l_id = l.l_id 
+   ORDER BY c.c_id DESC LIMIT 5
+   
+2. SELECT c.c_code,c.c_name,c.c_generation,a.a_participant,a.a_remark,p.p_name,p.code
+   FROM tbl_activity as a
+   LEFT JOIN tbl_course as c ON a.c_id = c.c_id 
+   LEFT JOIN tbl_lecturer as l ON a.l_id = l.l_id 
+   LEFT JOIN tbl_place as p ON a.p_id = p.p_id 
+   ORDER BY c.c_id DESC LIMIT 9
+
