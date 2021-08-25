@@ -1,0 +1,35 @@
+<textarea id="testString"></textarea><br>
+<button onclick="Main()">Run</button><br>
+<textarea id="display"></textarea>
+
+<script>
+  function display(text){
+    document.getElementById("display").value+=text+"\n";
+  }
+
+  function Main(){
+
+      var String = document.getElementById("testString").value.toString();
+
+      if(String.length > 50){
+          alert('Maxmimum 50 Characters')
+          return
+      }
+
+      String = String.split("\n");
+
+      for(var i=0;i<String.length;i++){
+
+          var runString = String[i];
+
+          if(runString.charAt(i) == "A"){
+             display("3");
+          }else if(runString.charAt(i) == "C"){
+             display("1");
+          }else{
+             display("2");
+          }
+       }
+  }
+
+</script>
